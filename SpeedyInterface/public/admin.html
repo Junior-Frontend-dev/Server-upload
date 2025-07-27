@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - File Share Platform</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-cloud-upload-alt me-2"></i>
+                File Share Platform
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Back to Files
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Admin Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="display-4 text-center mb-3">
+                    <i class="fas fa-cog me-3"></i>
+                    Admin Panel
+                </h1>
+            </div>
+        </div>
+
+        <!-- Admin Authentication -->
+        <div class="row" id="authSection">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-key me-2"></i>
+                            Admin Authentication
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-danger" id="authError" style="display: none;"></div>
+                        <form>
+                            <div class="mb-3">
+                                <label for="adminKey" class="form-label">Admin Key</label>
+                                <input type="password" class="form-control" id="adminKey" placeholder="Enter admin key">
+                            </div>
+                            <button type="button" class="btn btn-primary w-100" onclick="authenticate()">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Authenticate
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Admin Dashboard -->
+        <div id="adminDashboard" style="display: none;">
+            <!-- Dashboard Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+                <div class="container-fluid">
+                    <span class="navbar-brand">Admin Dashboard</span>
+                    <div class="navbar-nav">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="pill" href="#dashboard-overview">
+                                    <i class="fas fa-tachometer-alt"></i> Overview
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#file-management">
+                                    <i class="fas fa-folder"></i> Files
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#user-management">
+                                    <i class="fas fa-users"></i> Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#system-monitor">
+                                    <i class="fas fa-desktop"></i> System
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#security">
+                                    <i class="fas fa-shield-alt"></i> Security
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#analytics">
+                                    <i class="fas fa-chart-bar"></i> Analytics
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#backups">
+                                    <i class="fas fa-save"></i> Backups
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#configuration">
+                                    <i class="fas fa-cog"></i> Config
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="pill" href="#plugins">
+                                    <i class="fas fa-puzzle-piece"></i> Plugins
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Dashboard Overview -->
+                <div class="tab-pane fade show active" id="dashboard-overview">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-users fa-2x mb-2"></i>
+                                    <h4 id="totalUsers">-</h4>
+                                    <small>Total Users</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file fa-2x mb-2"></i>
+                                    <h4 id="totalFiles">-</h4>
+                                    <small>Total Files</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-download fa-2x mb-2"></i>
+                                    <h4 id="totalDownloads">-</h4>
+                                    <small>Total Downloads</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-hdd fa-2x mb-2"></i>
+                                    <h4 id="totalStorage">-</h4>
+                                    <small>Storage Used</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>Recent Admin Logins</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>IP</th>
+                                                    <th>Time</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="adminLogsTable">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>Recent Downloads</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>File</th>
+                                                    <th>IP</th>
+                                                    <th>Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="downloadLogsTable">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Management Tab -->
+                <div class="tab-pane fade" id="file-management">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary" onclick="refreshFileList()">
+                                    <i class="fas fa-sync-alt me-1"></i>Refresh
+                                </button>
+                                <button class="btn btn-success" id="deleteAllBtn" style="display: none;" onclick="deleteSelectedFiles()">
+                                    <i class="fas fa-trash me-1"></i>Delete Selected
+                                </button>
+                                <button class="btn btn-warning" onclick="bulkFileOperations()">
+                                    <i class="fas fa-cogs me-1"></i>Bulk Operations
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="adminSearchInput" placeholder="Search files...">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced File Upload -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6><i class="fas fa-upload me-2"></i>File Upload</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="upload-zone" id="uploadZone">
+                                <div class="upload-zone-content">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                    <h5>Drag & Drop Files Here</h5>
+                                    <p>or click to browse</p>
+                                    <input type="file" id="fileInput" multiple style="display: none;">
+                                </div>
+                            </div>
+
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" style="display: none;" class="mt-3">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Upload Results -->
+                            <div id="uploadResults" style="display: none;" class="mt-3">
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span id="uploadSuccessMessage"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Files Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6><i class="fas fa-folder me-2"></i>Files Management</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="selectAllFiles">
+                                    <label class="form-check-label">Select All</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>File Name</th>
+                                            <th>Size</th>
+                                            <th>Type</th>
+                                            <th>Created</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="filesTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="noAdminFiles" style="display: none;" class="text-center py-4">
+                                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No files found</h5>
+                                <p class="text-muted">Upload some files to get started</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Tab -->
+                <div class="tab-pane fade" id="user-management">
+                    <div id="userManagementContainer">
+                        Loading users...
+                    </div>
+                </div>
+
+                <!-- System Monitor Tab -->
+                <div class="tab-pane fade" id="system-monitor">
+                    <div id="systemMonitoringContainer">
+                        Loading system data...
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div class="tab-pane fade" id="security">
+                    <div id="securityContainer">
+                        Loading security data...
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div class="tab-pane fade" id="analytics">
+                    <div id="analyticsContainer">
+                        Loading analytics...
+                    </div>
+                </div>
+
+                <!-- Backups Tab -->
+                <div class="tab-pane fade" id="backups">
+                    <div id="backupContainer">
+                        Loading backups...
+                    </div>
+                </div>
+
+                <!-- Configuration Tab -->
+                <div class="tab-pane fade" id="configuration">
+                    <div id="configContainer">
+                        Loading configuration...
+                    </div>
+                </div>
+
+                <!-- Plugins Tab -->
+                <div class="tab-pane fade" id="plugins">
+                    <div id="pluginContainer">
+                        Loading plugins...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteConfirmText">Are you sure you want to delete this file?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash me-1"></i>
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Settings Modal -->
+    <div class="modal fade" id="fileSettingsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-cog me-2"></i>
+                        File Settings - <span id="settingsFileName"></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="settingsFileId">
+
+                    <!-- File Info -->
+                    <div class="mb-3">
+                        <label class="form-label">Current Views:</label>
+                        <span id="settingsViewCount" class="badge bg-info">0</span>
+                    </div>
+
+                    <!-- Hidden File Setting -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isHiddenToggle">
+                            <label class="form-check-label" for="isHiddenToggle">
+                                Hidden File (Accessible only via direct link)
+                            </label>
+                        </div>
+                        <div id="hiddenUrlSection" style="display: none;" class="mt-2">
+                            <label class="form-label">Hidden URL:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="hiddenUrl" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('hiddenUrl')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto-Delete After Views Setting -->
+                    <div class="mb-3">
+                        <label for="viewLimit" class="form-label">Auto-Delete After Views</label>
+                        <input type="number" class="form-control" id="viewLimit" placeholder="Enter view limit (leave empty for no limit)">
+                        <div class="form-text">File will be automatically deleted after this many views</div>
+                    </div>
+
+                    <!-- Password Protection Setting -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="passwordProtectionToggle">
+                            <label class="form-check-label" for="passwordProtectionToggle">
+                                Password Protection
+                            </label>
+                        </div>
+                        <div id="passwordSection" style="display: none;" class="mt-2">
+                            <label for="filePassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="filePassword" placeholder="Set password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileSettings()">
+                        <i class="fas fa-save me-1"></i>
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
+<script>
+function populateFilesTable(files) {
+    const filesTableBody = document.getElementById('filesTableBody');
+    const noAdminFiles = document.getElementById('noAdminFiles');
+    const deleteAllBtn = document.getElementById('deleteAllBtn');
+
+    filesTableBody.innerHTML = ''; // Clear existing rows
+
+    if (files.length === 0) {
+        noAdminFiles.style.display = 'block';
+        deleteAllBtn.style.display = 'none';
+    } else {
+        noAdminFiles.style.display = 'none';
+        deleteAllBtn.style.display = 'inline-block';
+
+        files.forEach(file => {
+            const row = filesTableBody.insertRow();
+
+            // Checkbox cell
+            const checkboxCell = row.insertCell(0);
+            checkboxCell.innerHTML = `
+                <input type="checkbox" class="file-checkbox form-check-input" value="${file.name}">
+            `;
+
+            // Name cell
+            const nameCell = row.insertCell(1);
+            nameCell.textContent = file.name;
+
+            // Size cell
+            const sizeCell = row.insertCell(2);
+            sizeCell.textContent = formatFileSize(file.size);
+
+            // Type cell
+            const typeCell = row.insertCell(3);
+            typeCell.textContent = file.type;
+
+            // Uploaded cell
+            const uploadedCell = row.insertCell(4);
+            uploadedCell.textContent = formatDate(file.uploaded);
+
+            // Actions cell
+            const actionsCell = row.insertCell(5);
+            actionsCell.innerHTML = `
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary" onclick="downloadFile('${file.name}')">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-outline-info" onclick="openFileSettings('${file.id || file.name}')">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                    <button class="btn btn-outline-warning" onclick="resetViewCount('${file.id || file.name}')">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger" onclick="deleteFile('${file.name}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+        });
+    }
+}
+</script>
