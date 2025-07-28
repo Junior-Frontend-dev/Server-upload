@@ -6,3 +6,4 @@
 {"level":"info","message":"Default admin user created (username: admin, password: admin123)","service":"file-share-platform","timestamp":"2025-07-28 19:41:12"}
 {"level":"info","message":"Database connection established successfully.","service":"file-share-platform","timestamp":"2025-07-28 19:43:13"}
 {"level":"info","message":"Database models synchronized.","service":"file-share-platform","timestamp":"2025-07-28 19:43:13"}
+{"level":"info","message":"Default admin user created (username: admin, password: admin123)","service":"file-share-platform","timestamp":"2025-07-28 19:43:14"}
